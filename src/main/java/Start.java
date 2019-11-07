@@ -1,82 +1,117 @@
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Start {
 
-    private static String searchWord = "";
     private static int countOfSearchWord = 0;
 
     public static void main(String[] args) {
 
-        StringBuffer sb = new StringBuffer();
-
-        // Inputting path to our log file.
-
-        String path = "";
-        BufferedReader reader1 = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("Enter path to your file:"); // C:\today.log
-
-        File file;
-        while (true) {
-            try {
-                path = reader1.readLine();
-            } catch (IOException e) {
-                System.out.println("Input error! Try again.");
-                continue;
-            }
-
-            file = new File(path);
-            if (file.exists()) {
-                System.out.println("File exists.");
-                break;
-            }
-            else System.out.println("File does not exists! Try again.");
-        }
-
-        BufferedReader reader2 = null;
-
-        try {
-            reader2 = new BufferedReader(new FileReader(file));
-        }
-        catch (FileNotFoundException e) {
-            System.out.println("File not found!");
-        }
+        // Inputting path to the log file.
+        System.out.println("Enter the path to the file:"); // C:\bookpart.log
+        String path = getInput();
 
         // Inputting search word.
+        System.out.println("You are searching:"); // "объект"
+        String searchWord = getInput();
 
-        System.out.println("You are searching: ");
+        // Processing the file. Separating of the file into lines, each line individually copied to the list.
+        List<String> lines = fileToArrayList(getFile(path));
+
+        // Processing lines in the list.
+        for (String line : lines) {
+
+            if (line.contains(searchWord)) {
+
+
+
+            }
+
+        }
+
+        // Souting the result.
+        System.out.println("Result!");
+
+    }
+
+
+
+    public static String getInput() {
+
+        InputStreamReader inputStreamReader = new InputStreamReader(System.in);
+        BufferedReader reader = new BufferedReader(inputStreamReader);
+
+        String input;
         while (true) {
             try {
-                searchWord = reader1.readLine();
+                input = reader.readLine();
                 break;
             } catch (IOException e) {
-                System.out.println("Input error! Try again.");
+                System.out.println("Input error! Try again...");
             }
         }
 
-        // Processing the file. Counting quantity of keywords.
-
-        String s = "";
+        // Closing streams.
         try {
-            while ((s = reader2.readLine()) != null) {
-//                System.out.println(s);
-                if (s.toLowerCase().equals(searchWord.toLowerCase())) countOfSearchWord++;
+            reader.close();
+            inputStreamReader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return input;
+    }
+
+
+
+    public static File getFile(String path) {
+
+        File file = new File(path);
+
+        if (file.exists() & file.canRead()) {
+            System.out.println("File exists.");
+            return file;
+        }
+        else {
+            System.out.println("File does not exists! Try again.");
+            return null;
+        }
+
+    }
+
+
+
+    public static List<String> fileToArrayList(File file) {
+
+        List<String> lines = new ArrayList<>();
+
+        FileReader fileReader;
+        try {
+            fileReader = new FileReader(file);
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found!");
+            fileReader = null;
+        }
+        BufferedReader reader = new BufferedReader(fileReader);
+
+        String line;
+        try {
+            while ((line = reader.readLine()) != null) {
+                lines.add(line);
             }
         }
         catch (IOException | NullPointerException e) {
             e.printStackTrace();
         }
-        finally {
-            try {
-                reader2.close();
-            } catch (IOException | NullPointerException e) {
-                e.printStackTrace();
-            }
-        }
 
-        // Souting
+        return lines;
+    }
 
-        System.out.println("The word " + searchWord + " appears in " + file.getName() + " " + countOfSearchWord + " times!");
 
+
+    public static int getCount(String line) {
+        return 0;
     }
 
 }
