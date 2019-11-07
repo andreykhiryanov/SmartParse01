@@ -1,6 +1,5 @@
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Start {
 
@@ -13,29 +12,43 @@ public class Start {
         String path = getInput();
 
         // Inputting search word.
-        System.out.println("You are searching:"); // "–æ–±—ä–µ–∫—Ç"
+        System.out.println("You are searching:"); // "Ó·˙ÂÍÚ"
         String searchWord = getInput();
 
         // Processing the file. Separating of the file into lines, each line individually copied to the list.
         List<String> lines = fileToArrayList(getFile(path));
 
+        // Creating HashMap<Word, QuantityInText>
+        Map<String, Integer> strings = new HashMap<>();
+
         // Processing lines in the list.
         for (String line : lines) {
 
-            if (line.contains(searchWord)) {
+            // Removing everything except spaces & letters in each line.
+            String temp = line.replaceAll("[^\\p{L} ]+", "");
 
+            // Splitting every line on separate words.
+            for (String word : temp.split(" ")) {
 
-
+                // Forming the map
+                if (strings.containsKey(word)) {
+                    int i = strings.get(word);
+                    strings.put(word, ++i);
+                }
+                else strings.put(word, 1);
             }
-
         }
 
         // Souting the result.
-        System.out.println("Result!");
+        for (Map.Entry<String, Integer> entry : strings.entrySet()) {
+            System.out.print("The word \"" + entry.getKey() + "\" appears in the text " + entry.getValue());
+            if (entry.getValue() == 1) System.out.println(" time.");
+            else System.out.println(" times.");
+        }
 
     }
 
-
+    // Just comment.
 
     public static String getInput() {
 
@@ -53,17 +66,17 @@ public class Start {
         }
 
         // Closing streams.
-        try {
-            reader.close();
-            inputStreamReader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            reader.close();
+//            inputStreamReader.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
         return input;
     }
 
-
+    // Just comment.
 
     public static File getFile(String path) {
 
@@ -80,7 +93,7 @@ public class Start {
 
     }
 
-
+// Just comment.
 
     public static List<String> fileToArrayList(File file) {
 
@@ -108,7 +121,7 @@ public class Start {
         return lines;
     }
 
-
+    // Just comment.
 
     public static int getCount(String line) {
         return 0;
