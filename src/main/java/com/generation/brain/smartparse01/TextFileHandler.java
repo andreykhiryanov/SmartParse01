@@ -1,12 +1,29 @@
+package com.generation.brain.smartparse01;
+
+import org.springframework.beans.factory.annotation.Value;
+import javax.annotation.PreDestroy;
 import java.io.*;
 import java.util.*;
 import java.util.stream.Stream;
 
 public class TextFileHandler {
 
+    @Value("${textFileHandler.version}")
+    private double version;
+
     private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-    public String getInput(boolean readyToClose) {
+    @PreDestroy
+    public void destroy() {
+        // Closing stream.
+        try {
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String getInput() {
 
         String input;
         while (true) {
@@ -18,19 +35,8 @@ public class TextFileHandler {
             }
         }
 
-        // Closing stream.
-        if (readyToClose) {
-            try {
-                reader.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
         return input;
     }
-
-    // Just comment.
 
     public File getFile(String path) {
 
@@ -46,8 +52,6 @@ public class TextFileHandler {
         }
 
     }
-
-    // Just comment.
 
     public List<String> fileToArrayList(File file) {
 
@@ -92,8 +96,6 @@ public class TextFileHandler {
         return lines;
     }
 
-    // Just comment.
-
     public void processAllLines(List<String> lines) {
 
         // Creating HashMap<Word, QuantityInText>.
@@ -123,8 +125,6 @@ public class TextFileHandler {
 
     }
 
-    // Just comment.
-
     public void sortAndSout(Map<String, Integer> strings) {
 
         // Sorting.
@@ -140,8 +140,6 @@ public class TextFileHandler {
         }
 
     }
-
-    // Just comment.
 
     public void countQuantity(List<String> lines, String searchWord) {
 

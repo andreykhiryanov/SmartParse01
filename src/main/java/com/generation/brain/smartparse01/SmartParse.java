@@ -1,3 +1,6 @@
+package com.generation.brain.smartparse01;
+
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import java.io.File;
 import java.util.List;
 
@@ -5,7 +8,9 @@ public class SmartParse {
 
     public static void main(String[] args) {
 
-        TextFileHandler textFileHandler = new TextFileHandler();
+        // Getting TextFileHandler from Spring context
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
+        TextFileHandler textFileHandler = context.getBean(TextFileHandler.class);
 
         System.out.println("Hello and welcome to the SmartParse app!");
 
@@ -22,9 +27,9 @@ public class SmartParse {
             // Getting the file.
             File file = null;
             while (true) {
-                // Inputting path to the log file.
+                // Inputting path to the file.
                 System.out.println("Please, enter the path to your file on your hard drive,\nor enter \"0\" to exit the program."); // e.g. C:\bookpart.log
-                String path = textFileHandler.getInput(false);
+                String path = textFileHandler.getInput();
 
                 // Aborting inner cycle, if user want to exit.
                 if (path.equals("0")) break;
@@ -64,7 +69,7 @@ public class SmartParse {
                 // Getting the choice. If user enters String instead int, interrupt this cycle.
                 int choice = 0;
                 try {
-                    choice = Integer.parseInt(textFileHandler.getInput(false));
+                    choice = Integer.parseInt(textFileHandler.getInput());
                 }
                 catch (NumberFormatException e) {
                     System.out.println("Wrong choice! Try again...");
@@ -85,7 +90,7 @@ public class SmartParse {
                 else if (choice == 2) {
                     // Inputting search word.
                     System.out.println("You are searching:"); // "объект"
-                    String searchWord = textFileHandler.getInput(false);
+                    String searchWord = textFileHandler.getInput();
                     textFileHandler.countQuantity(lines, searchWord);
                 }
                 else if (choice == 3) {
@@ -96,6 +101,7 @@ public class SmartParse {
 
             // The end of the main iteration.
         }
+
     }
 
 }
