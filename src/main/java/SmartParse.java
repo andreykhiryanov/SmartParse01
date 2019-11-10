@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.*;
+import java.util.stream.Stream;
 
 public class SmartParse {
 
@@ -56,7 +57,7 @@ public class SmartParse {
                 System.out.println("What do you want to do?");
                 System.out.println("Enter \"1\", if you want to see a list of words and how often they appear in the text.");
                 System.out.println("Enter \"2\", if you want to see how often a particular word appears in the text.");
-                System.out.println("Enter \"3\", if you want to choose new file.");
+                System.out.println("Enter \"3\", if you want to choose a new file.");
                 System.out.println("Enter \"0\", if you want to exit the program.");
 
                 // Getting the choice. If user enters String instead int, interrupt this cycle.
@@ -172,8 +173,15 @@ public class SmartParse {
         // Removing everything except spaces & letters in each line.
         for (int i = 0; i < lines.size(); i++) {
             String temp = lines.get(i);
-            temp = temp.replaceAll("[^\\p{L} ]+", "");
+            temp = temp.replaceAll("[^\\p{L} \n]+", "");
             lines.set(i, temp);
+        }
+
+        // Closing the stream.
+        try {
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         return lines;
@@ -193,18 +201,34 @@ public class SmartParse {
             for (String word : line.split(" ")) {
 
                 // All words in lower case.
-                String wordInLowerCase = word.toLowerCase();
-                // Forming the map.
-                if (strings.containsKey(wordInLowerCase)) {
-                    int i = strings.get(wordInLowerCase);
-                    strings.put(wordInLowerCase, ++i);
+                if (!word.equals("")) {
+                    String wordInLowerCase = word.toLowerCase();
+                    // Forming the map.
+                    if (strings.containsKey(wordInLowerCase)) {
+                        int i = strings.get(wordInLowerCase);
+                        strings.put(wordInLowerCase, ++i);
+                    }
+                    else strings.put(wordInLowerCase, 1);
                 }
-                else strings.put(wordInLowerCase, 1);
             }
         }
 
-        // Souting the result.
-        for (Map.Entry<String, Integer> entry : strings.entrySet()) {
+        // Sorting and souting the result.
+        sortAndSout(strings);
+
+    }
+
+    // Just comment.
+
+    public static void sortAndSout(Map<String, Integer> strings) {
+
+        // Sorting.
+        Map<String, Integer> result = new LinkedHashMap<>();
+        Stream<Map.Entry<String, Integer>> stream = strings.entrySet().stream();
+        stream.sorted(Comparator.comparing(e -> e.getValue())).forEach(e -> result.put(e.getKey(),e.getValue()));
+
+        // Souting.
+        for (Map.Entry<String, Integer> entry : result.entrySet()) {
             System.out.print("The word \"" + entry.getKey() + "\" appears in the text " + entry.getValue());
             if (entry.getValue() == 1) System.out.println(" time.");
             else System.out.println(" times.");
@@ -227,7 +251,7 @@ public class SmartParse {
                 String wordInLowerCase = word.toLowerCase();
                 // Forming the map.
 
-                if (wordInLowerCase.equals(searchWord)) count++;
+                if (wordInLowerCase.equals(searchWord) & !wordInLowerCase.equals("")) count++;
             }
         }
 

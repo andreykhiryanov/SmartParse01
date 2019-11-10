@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="SmartParse01:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/SmartParse01_jar</output-path>
+    <root id="archive" name="SmartParse01.jar">
+      <element id="module-output" name="SmartParse01" />
+    </root>
+  </artifact>
+</component>
