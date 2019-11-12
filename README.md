@@ -1,6 +1,6 @@
 # SmartParse01
 
-Hello and welcome to the com.generation.brain.smartparse01.SmartParse app!
+Hello and welcome to the SmartParse app!
 -----
 Please, enter the path to your file on your hard drive,
 or enter "0" to exit the program.
