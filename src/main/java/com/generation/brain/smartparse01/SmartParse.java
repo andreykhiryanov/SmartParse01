@@ -12,6 +12,7 @@ public class SmartParse {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
         TextFileHandler textFileHandler = context.getBean(TextFileHandler.class);
 
+        System.out.println("-----");
         System.out.println("Hello and welcome to the SmartParse app!");
 
         // The whole program works in an endless cycle
@@ -28,7 +29,7 @@ public class SmartParse {
             File file = null;
             while (true) {
                 // Inputting path to the file.
-                System.out.println("Please, enter the path to your file on your hard drive,\nor enter \"0\" to exit the program."); // e.g. C:\bookpart.log
+                System.out.println("Please, enter the path to your text file on your hard drive,\nor enter \"0\" to exit the program."); // e.g. C:\bookpart.log
                 String path = textFileHandler.getInput();
 
                 // Aborting inner cycle, if user want to exit.
